@@ -1,18 +1,18 @@
 # The Experiment Plan: JSON-in-Git vs Postgres
 
 ## Goal
-Demonstrate performance and operational differences between storing 1,000 DataLocations as committed JSON blobs in a remote Git repo vs storing 1,000 rows in a Postgres `datalocations` table.
+Demonstrate performance and operational differences between storing DataLocations as committed JSON blobs in a remote Git repo vs storing rows in a Postgres `datalocations` table across multiple dataset sizes.
 
 ## Hypothesis
 Postgres will outperform Git for bulk reads and bulk updates, especially as record counts grow. Git will be simpler to version and audit, but will be slower for repeated operations when data is only accessible via remote Git objects.
 
 ## Data Model (Shared)
-- `id` (int, 1..1000)
+- `id` (int, 1..N)
 - `name` (string)
 - `url` (string, fake URL)
 
 ## Controls
-- Fixed dataset size: 1,000 records.
+- Dataset sizes: N = 100, 1000, 15000.
 - Same machine and environment for all runs.
 - Same schema for both storage types.
 - Repeat each benchmark multiple runs and report mean/min/max/stdev.
@@ -22,7 +22,7 @@ Postgres will outperform Git for bulk reads and bulk updates, especially as reco
 ## Benchmark Matrix
 | Operation | Remote Git (committed blobs) | Postgres |
 | --- | --- | --- |
-| Seed | Create files, commit, push | Insert 1,000 rows |
+| Seed | Create files, commit, push | Insert N rows |
 | Read all | Fetch + read blobs from commit | `SELECT *` |
 | Read random (100) | Fetch + read 100 blobs | 100 point lookups |
 | Update all | Modify files, commit, push | `UPDATE` all rows |
@@ -40,14 +40,16 @@ Postgres will outperform Git for bulk reads and bulk updates, especially as reco
    - Provide `GIT_REMOTE_URL` (HTTPS or Git server URL).
    - The remote repo should be bare or otherwise accept pushes to the target branch.
    - The benchmark creates new branches (seed/update/delete) under the chosen prefix.
-4. Run the benchmark script:
-   `python experiments\\benchmark_datalocations.py --count 1000 --runs 5`
-5. Review results in `experiments\\results\\latest.md` and `experiments\\results\\latest.json`.
+4. Run the benchmark script for each parameter set (see below).
+5. Review results in `experiments\\results\\n100\\`, `experiments\\results\\n1000\\`, `experiments\\results\\n15000\\`.
 6. Summarize conclusions in `ProsCons.md`.
 
-## Latest Run (for reference)
-- `python experiments\\benchmark_datalocations.py --count 1500 --runs 20`
-- Results: `experiments\\results\\latest.md`
+## Parameter Sweep
+| N | Runs | Command | Results |
+| --- | --- | --- | --- |
+| 100 | 10 | `python experiments\\benchmark_datalocations.py --count 100 --runs 10 --results-dir experiments\\results\\n100` | `experiments\\results\\n100\\latest.md` |
+| 1000 | 10 | `python experiments\\benchmark_datalocations.py --count 1000 --runs 10 --results-dir experiments\\results\\n1000` | `experiments\\results\\n1000\\latest.md` |
+| 15000 | 3 | `python experiments\\benchmark_datalocations.py --count 15000 --runs 3 --results-dir experiments\\results\\n15000` | `experiments\\results\\n15000\\latest.md` |
 
 ## Methodology Notes
 - The benchmark recreates the dataset before each run to keep runs comparable.
@@ -70,8 +72,14 @@ Postgres will outperform Git for bulk reads and bulk updates, especially as reco
 - Increase `--count` to observe scaling behavior.
 
 ## Output Artifacts
-- `experiments\\results\\latest.json`
-- `experiments\\results\\latest.md`
+- `experiments\\results\\n100\\latest.json`
+- `experiments\\results\\n100\\latest.md`
+- `experiments\\results\\n1000\\latest.json`
+- `experiments\\results\\n1000\\latest.md`
+- `experiments\\results\\n15000\\latest.json`
+- `experiments\\results\\n15000\\latest.md`
+- `experiments\\results\\latest.json` (copy of the most recent run)
+- `experiments\\results\\latest.md` (copy of the most recent run)
 - `ProsCons.md`
 - `experiments\\git_work\\` and `experiments\\git_read\\` (local Git clones used for benchmarks)
 

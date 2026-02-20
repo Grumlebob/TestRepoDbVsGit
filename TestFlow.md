@@ -17,6 +17,7 @@ This guide describes what the benchmark script measures, how each test is execut
 3. Verify Git remote access (`GIT_REMOTE_URL`).
 4. Ensure the remote repo can accept new branches from the benchmark.
 5. Decide run settings (`--count`, `--runs`, `--sample-size`).
+6. For the parameter sweep, use N = 100, 1000, 15000 with runs = 10, 10, 3.
 
 ## How Each Benchmark Runs
 1. Load `.env` if present and establish a Postgres connection (unless `--skip-db`).
@@ -33,3 +34,4 @@ This guide describes what the benchmark script measures, how each test is execut
 1. Use the Summary table to compare mean timings and speedup ratios.
 2. Use the Git/Postgres tables to see stability (min/max/stdev).
 3. Large variance often indicates caching, compression effects, or network jitter.
+4. Compare `experiments\\results\\n100`, `n1000`, and `n15000` to see scaling trends.

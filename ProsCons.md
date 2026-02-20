@@ -1,21 +1,45 @@
 # Pros and Cons: JSON-in-Git vs Postgres
 
-## Measured Results (latest run)
-- Source: `experiments\\results\\latest.md`
+## Measured Results (parameter sweep)
+- Sources:
+  - `experiments\\results\\n100\\latest.md`
+  - `experiments\\results\\n1000\\latest.md`
+  - `experiments\\results\\n15000\\latest.md`
 
+### N=100 (runs=10)
 | Operation | Git mean (ms) | Postgres mean (ms) | Faster | Speedup |
 | --- | --- | --- | --- | --- |
-| Seed | 2226.19 | 92.86 | Postgres | 23.97x |
-| Read all | 462.74 | 15.67 | Postgres | 29.53x |
-| Read random 100 | 431.96 | 367.24 | Postgres | 1.18x |
-| Update all | 12340.84 | 40.06 | Postgres | 308.02x |
-| Update random 100 | 1829.62 | 388.14 | Postgres | 4.71x |
-| Delete all | 1673.06 | 71.62 | Postgres | 23.36x |
+| Seed | 1229.85 | 52.52 | Postgres | 23.42x |
+| Read all | 421.06 | 11.98 | Postgres | 35.15x |
+| Read random 100 | 447.75 | 371.30 | Postgres | 1.21x |
+| Update all | 1797.30 | 21.05 | Postgres | 85.40x |
+| Update random 100 | 1874.49 | 392.49 | Postgres | 4.78x |
+| Delete all | 1282.00 | 46.27 | Postgres | 27.71x |
+
+### N=1000 (runs=10)
+| Operation | Git mean (ms) | Postgres mean (ms) | Faster | Speedup |
+| --- | --- | --- | --- | --- |
+| Seed | 1885.90 | 77.55 | Postgres | 24.32x |
+| Read all | 478.07 | 15.90 | Postgres | 30.07x |
+| Read random 100 | 430.08 | 363.30 | Postgres | 1.18x |
+| Update all | 12018.49 | 30.51 | Postgres | 393.87x |
+| Update random 100 | 2080.91 | 395.45 | Postgres | 5.26x |
+| Delete all | 1536.07 | 52.76 | Postgres | 29.11x |
+
+### N=15000 (runs=3)
+| Operation | Git mean (ms) | Postgres mean (ms) | Faster | Speedup |
+| --- | --- | --- | --- | --- |
+| Seed | 5697.33 | 342.00 | Postgres | 16.66x |
+| Read all | 720.06 | 42.51 | Postgres | 16.94x |
+| Read random 100 | 421.52 | 348.95 | Postgres | 1.21x |
+| Update all | 99237.96 | 234.42 | Postgres | 423.34x |
+| Update random 100 | 3654.75 | 388.69 | Postgres | 9.40x |
+| Delete all | 4547.86 | 54.20 | Postgres | 83.90x |
 
 Key observations:
-- Postgres dominates every operation, especially bulk updates (308x faster).
-- Random reads are the closest comparison but Postgres still wins (1.18x).
-- Git update-all has very high variance, likely from push/pack overhead.
+- Postgres dominates all operations at every N; the gap widens dramatically for update-all as N grows.
+- Random reads are the closest comparison; Postgres still wins but only by ~1.2x.
+- Git update-all and delete-all scale poorly due to commit + push overhead.
 
 ## JSON Files in Git (Remote)
 Pros:
@@ -52,4 +76,4 @@ Cons:
 - Use Postgres for operational workloads; use Git for versioned configuration or small, rarely-changed datasets.
 
 ## Conclusion
-Use the benchmark numbers to justify the storage choice. For operational workloads, Postgres wins decisively: 26x–256x faster for seed/update/delete and 42x faster for full reads. JSON-in-Git remains acceptable only when you need versioned files and performance is not the primary concern.
+Use the benchmark numbers to justify the storage choice. For operational workloads, Postgres wins decisively: across N=100..15000, seed/update/delete are roughly 16x–423x faster and full reads are about 17x–35x faster. JSON-in-Git remains acceptable only when you need versioned files and performance is not the primary concern.
