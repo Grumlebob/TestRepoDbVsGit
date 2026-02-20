@@ -1,0 +1,45 @@
+name: Generate HandledOutput
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "HandledOutput/**"
+
+jobs:
+  build:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Generate HandledOutput
+        run: |
+          if [[ ! -d "DataLocations/json_store" ]]; then
+            echo "DataLocations/json_store not found; skipping."
+            exit 0
+          fi
+          python scripts/generate_handled_output.py \
+            --input DataLocations/json_store \
+            --output HandledOutput
+
+      - name: Commit HandledOutput
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git switch -B InsertDateHandledOutputs
+            git add HandledOutput
+            git commit -m "Generate HandledOutput [skip ci]"
+            git push -u origin InsertDateHandledOutputs
+          else
+            echo "No changes to commit."
+          fi
