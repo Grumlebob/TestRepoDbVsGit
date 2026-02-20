@@ -45,6 +45,10 @@ Postgres will outperform Git for bulk reads and bulk updates, especially as reco
 5. Review results in `experiments\\results\\latest.md` and `experiments\\results\\latest.json`.
 6. Summarize conclusions in `ProsCons.md`.
 
+## Latest Run (for reference)
+- `python experiments\\benchmark_datalocations.py --count 1500 --runs 20`
+- Results: `experiments\\results\\latest.md`
+
 ## Methodology Notes
 - The benchmark recreates the dataset before each run to keep runs comparable.
 - Git reads fetch the remote and read committed blobs (no working tree).

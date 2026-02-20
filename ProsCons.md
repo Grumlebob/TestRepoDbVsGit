@@ -5,17 +5,17 @@
 
 | Operation | Git mean (ms) | Postgres mean (ms) | Faster | Speedup |
 | --- | --- | --- | --- | --- |
-| Seed | 1885.52 | 71.30 | Postgres | 26.45x |
-| Read all | 513.90 | 12.15 | Postgres | 42.31x |
-| Read random 100 | 460.95 | 349.58 | Postgres | 1.32x |
-| Update all | 7004.18 | 27.29 | Postgres | 256.62x |
-| Update random 100 | 2007.47 | 373.05 | Postgres | 5.38x |
-| Delete all | 1584.57 | 43.32 | Postgres | 36.57x |
+| Seed | 2226.19 | 92.86 | Postgres | 23.97x |
+| Read all | 462.74 | 15.67 | Postgres | 29.53x |
+| Read random 100 | 431.96 | 367.24 | Postgres | 1.18x |
+| Update all | 12340.84 | 40.06 | Postgres | 308.02x |
+| Update random 100 | 1829.62 | 388.14 | Postgres | 4.71x |
+| Delete all | 1673.06 | 71.62 | Postgres | 23.36x |
 
 Key observations:
-- Postgres dominates every operation, especially bulk updates (256x faster).
-- Git reads are still much slower due to fetch + blob access over the network.
-- Random reads are the closest comparison but Postgres still wins (1.32x).
+- Postgres dominates every operation, especially bulk updates (308x faster).
+- Random reads are the closest comparison but Postgres still wins (1.18x).
+- Git update-all has very high variance, likely from push/pack overhead.
 
 ## JSON Files in Git (Remote)
 Pros:

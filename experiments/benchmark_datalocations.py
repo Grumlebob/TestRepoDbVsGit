@@ -6,6 +6,7 @@ import os
 import random
 import re
 import shutil
+import stat
 import statistics
 import subprocess
 from dataclasses import dataclass
@@ -126,9 +127,17 @@ def _run_git(
     return result.stdout
 
 
+def _remove_readonly(func, path, _excinfo) -> None:
+    try:
+        os.chmod(path, stat.S_IWRITE)
+        func(path)
+    except OSError:
+        pass
+
+
 def _ensure_empty_dir(path: Path) -> None:
     if path.exists():
-        shutil.rmtree(path)
+        shutil.rmtree(path, onerror=_remove_readonly)
     path.mkdir(parents=True, exist_ok=True)
 
 
