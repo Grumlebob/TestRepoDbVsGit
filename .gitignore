@@ -1,0 +1,4 @@
+/.env
+/experiments/__pycache__
+/experiments/git_work/
+/experiments/git_read/
