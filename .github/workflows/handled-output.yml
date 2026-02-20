@@ -6,6 +6,9 @@ on:
     paths-ignore:
       - "HandledOutput/**"
 
+permissions:
+  contents: write
+
 jobs:
   build:
     if: github.actor != 'github-actions[bot]'
@@ -31,15 +34,33 @@ jobs:
             --input DataLocations/json_store \
             --output HandledOutput
 
+      - name: Set branch name
+        run: echo "BRANCH_NAME=InsertDateHandledOutputs-$(date -u +%Y%m%dT%H%M%SZ)" >> "$GITHUB_ENV"
+
       - name: Commit HandledOutput
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git switch -C InsertDateHandledOutputs
+            git switch -C "$BRANCH_NAME"
             git add HandledOutput
             git commit -m "Generate HandledOutput [skip ci]"
-            git push -u origin InsertDateHandledOutputs
+            git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+            git push -u origin "$BRANCH_NAME"
+            echo "CHANGES_COMMITTED=true" >> "$GITHUB_ENV"
           else
             echo "No changes to commit."
           fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Open PR to main
+        if: ${{ env.CHANGES_COMMITTED == 'true' }}
+        run: |
+          gh pr create \
+            --base main \
+            --head "$BRANCH_NAME" \
+            --title "Generate HandledOutput" \
+            --body "Automated HandledOutput generation from DataLocations/json_store."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
