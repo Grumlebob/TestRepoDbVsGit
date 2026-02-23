@@ -2,12 +2,12 @@
 
 ## Run Info
 
-- Run UTC: 2026-02-23T08:20:40.224290+00:00
+- Run UTC: 2026-02-23T08:40:59.805903+00:00
 - Count: 100
 - Runs: 4
 - Sample size: 100
 - Table: DataLocations
-- Git branch: main-base-20260223T081948Z
+- Git branch: main-base-20260223T084024Z
 - Git data dir: git_data
 - Git remote: https://github.com/Grumlebob/TestRepoDbVsGit.git
 
@@ -15,34 +15,34 @@
 
 | Operation | Git (remote) | Postgres | Faster | Speedup |
 | --- | --- | --- | --- | --- |
-| Seed | 1253.30 | 53.93 | Postgres | 23.24x |
-| Read all | 497.58 | 11.73 | Postgres | 42.43x |
-| Read random 100 | 427.96 | 419.62 | Postgres | 1.02x |
-| Update all | 3635.68 | 19.65 | Postgres | 185.03x |
-| Update random 100 | 3547.51 | 382.70 | Postgres | 9.27x |
-| Delete all | 1294.57 | 44.68 | Postgres | 28.97x |
+| Seed | 1210.91 | 56.59 | Postgres | 21.40x |
+| Read all | 481.64 | 11.33 | Postgres | 42.52x |
+| Read random 100 | 411.86 | 392.64 | Postgres | 1.05x |
+| Update all | 1793.83 | 20.95 | Postgres | 85.60x |
+| Update random 100 | 1813.75 | 349.82 | Postgres | 5.18x |
+| Delete all | 1255.81 | 38.99 | Postgres | 32.21x |
 
 ## Git Benchmarks
 
 | Benchmark | Runs | Mean (ms) | Min (ms) | Max (ms) | Stdev (ms) |
 | --- | --- | --- | --- | --- | --- |
-| git_seed | 4 | 1253.30 | 1207.40 | 1296.33 | 38.15 |
-| git_read_all | 4 | 497.58 | 406.74 | 626.36 | 103.23 |
-| git_read_random_100 | 4 | 427.96 | 404.77 | 477.86 | 33.77 |
-| git_update_all | 4 | 3635.68 | 3555.98 | 3672.99 | 54.34 |
-| git_update_random_100 | 4 | 3547.51 | 3488.91 | 3597.53 | 51.52 |
-| git_delete_all | 4 | 1294.57 | 1260.28 | 1320.21 | 24.98 |
+| git_seed | 4 | 1210.91 | 1177.51 | 1241.77 | 28.03 |
+| git_read_all | 4 | 481.64 | 388.19 | 591.12 | 97.24 |
+| git_read_random_100 | 4 | 411.86 | 408.43 | 419.02 | 4.84 |
+| git_update_all | 4 | 1793.83 | 1746.33 | 1839.82 | 38.64 |
+| git_update_random_100 | 4 | 1813.75 | 1783.00 | 1897.71 | 56.02 |
+| git_delete_all | 4 | 1255.81 | 1217.89 | 1287.18 | 28.87 |
 
 ## Postgres Benchmarks
 
 | Benchmark | Runs | Mean (ms) | Min (ms) | Max (ms) | Stdev (ms) |
 | --- | --- | --- | --- | --- | --- |
-| db_seed | 4 | 53.93 | 44.49 | 75.99 | 14.84 |
-| db_read_all | 4 | 11.73 | 10.39 | 12.97 | 1.32 |
-| db_read_random_100 | 4 | 419.62 | 363.41 | 526.70 | 74.18 |
-| db_update_all | 4 | 19.65 | 16.61 | 23.95 | 3.14 |
-| db_update_random_100 | 4 | 382.70 | 355.10 | 423.10 | 28.81 |
-| db_delete_all | 4 | 44.68 | 33.38 | 51.46 | 7.90 |
+| db_seed | 4 | 56.59 | 45.49 | 79.78 | 15.66 |
+| db_read_all | 4 | 11.33 | 10.15 | 12.71 | 1.12 |
+| db_read_random_100 | 4 | 392.64 | 322.95 | 551.18 | 106.44 |
+| db_update_all | 4 | 20.95 | 19.40 | 23.10 | 1.68 |
+| db_update_random_100 | 4 | 349.82 | 338.19 | 363.58 | 11.18 |
+| db_delete_all | 4 | 38.99 | 31.01 | 48.13 | 7.47 |
 
 
 ## Notes

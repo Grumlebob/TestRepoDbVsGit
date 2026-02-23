@@ -40,16 +40,29 @@ Postgres will outperform Git for bulk reads and bulk updates, especially as reco
    - Provide `GIT_REMOTE_URL` (HTTPS or Git server URL).
    - The remote repo should be bare or otherwise accept pushes to the target branch.
    - The benchmark creates new branches (seed/update/delete) under the chosen prefix.
-4. Run the benchmark script for each parameter set (see below).
-5. Review results in `experiments\\results\\n100\\`, `experiments\\results\\n1000\\`, `experiments\\results\\n15000\\`.
+   - GitHub runs use `https://github.com/Grumlebob/TestRepoDbVsGit.git` (default in `.env`).
+   - GitLab runs override `GIT_REMOTE_URL` with `https://gitlab.com/grumlebob-group/grumlebob-project.git`.
+4. Run the benchmark script for each parameter set (see below) and write to `_github` / `_gitlab` result directories.
+5. Review results in `experiments\\results\\n100_github\\`, `experiments\\results\\n100_gitlab\\`, etc.
 6. Summarize conclusions in `ProsCons.md`.
 
 ## Parameter Sweep
+
+GitHub (default `GIT_REMOTE_URL` from `.env`):
+
 | N | Runs | Command | Results |
 | --- | --- | --- | --- |
-| 100 | 10 | `python experiments\\benchmark_datalocations.py --count 100 --runs 10 --results-dir experiments\\results\\n100` | `experiments\\results\\n100\\latest.md` |
-| 1000 | 10 | `python experiments\\benchmark_datalocations.py --count 1000 --runs 10 --results-dir experiments\\results\\n1000` | `experiments\\results\\n1000\\latest.md` |
-| 15000 | 3 | `python experiments\\benchmark_datalocations.py --count 15000 --runs 3 --results-dir experiments\\results\\n15000` | `experiments\\results\\n15000\\latest.md` |
+| 100 | 4 | `python experiments\\benchmark_datalocations.py --count 100 --runs 4 --results-dir experiments\\results\\n100_github` | `experiments\\results\\n100_github\\latest.md` |
+| 1000 | 4 | `python experiments\\benchmark_datalocations.py --count 1000 --runs 4 --results-dir experiments\\results\\n1000_github` | `experiments\\results\\n1000_github\\latest.md` |
+| 15000 | 4 | `python experiments\\benchmark_datalocations.py --count 15000 --runs 4 --results-dir experiments\\results\\n15000_github` | `experiments\\results\\n15000_github\\latest.md` |
+
+GitLab (override `GIT_REMOTE_URL`):
+
+| N | Runs | Command | Results |
+| --- | --- | --- | --- |
+| 100 | 4 | `$env:GIT_REMOTE_URL="https://gitlab.com/grumlebob-group/grumlebob-project.git"; python experiments\\benchmark_datalocations.py --count 100 --runs 4 --results-dir experiments\\results\\n100_gitlab` | `experiments\\results\\n100_gitlab\\latest.md` |
+| 1000 | 4 | `$env:GIT_REMOTE_URL="https://gitlab.com/grumlebob-group/grumlebob-project.git"; python experiments\\benchmark_datalocations.py --count 1000 --runs 4 --results-dir experiments\\results\\n1000_gitlab` | `experiments\\results\\n1000_gitlab\\latest.md` |
+| 15000 | 4 | `$env:GIT_REMOTE_URL="https://gitlab.com/grumlebob-group/grumlebob-project.git"; python experiments\\benchmark_datalocations.py --count 15000 --runs 4 --results-dir experiments\\results\\n15000_gitlab` | `experiments\\results\\n15000_gitlab\\latest.md` |
 
 ## Methodology Notes
 - The benchmark recreates the dataset before each run to keep runs comparable.
@@ -72,17 +85,23 @@ Postgres will outperform Git for bulk reads and bulk updates, especially as reco
 - Increase `--count` to observe scaling behavior.
 
 ## Output Artifacts
-- `experiments\\results\\n100\\latest.json`
-- `experiments\\results\\n100\\latest.md`
-- `experiments\\results\\n1000\\latest.json`
-- `experiments\\results\\n1000\\latest.md`
-- `experiments\\results\\n15000\\latest.json`
-- `experiments\\results\\n15000\\latest.md`
+- `experiments\\results\\n100_github\\latest.json`
+- `experiments\\results\\n100_github\\latest.md`
+- `experiments\\results\\n100_gitlab\\latest.json`
+- `experiments\\results\\n100_gitlab\\latest.md`
+- `experiments\\results\\n1000_github\\latest.json`
+- `experiments\\results\\n1000_github\\latest.md`
+- `experiments\\results\\n1000_gitlab\\latest.json`
+- `experiments\\results\\n1000_gitlab\\latest.md`
+- `experiments\\results\\n15000_github\\latest.json`
+- `experiments\\results\\n15000_github\\latest.md`
+- `experiments\\results\\n15000_gitlab\\latest.json`
+- `experiments\\results\\n15000_gitlab\\latest.md`
 - `experiments\\results\\latest.json` (copy of the most recent run)
 - `experiments\\results\\latest.md` (copy of the most recent run)
 - `ProsCons.md`
 - `experiments\\git_work\\` and `experiments\\git_read\\` (local Git clones used for benchmarks)
 
 ## Success Criteria
-- Benchmark timings recorded for each operation in both storage types.
+- Benchmark timings recorded for each operation in both storage types for GitHub and GitLab remotes.
 - Pros/Cons written with references to measured results.

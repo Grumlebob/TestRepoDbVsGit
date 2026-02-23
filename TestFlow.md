@@ -3,7 +3,7 @@
 This guide describes what the benchmark script measures, how each test is executed, and how to interpret the output.
 
 ## What We Benchmark
-1. Seed: create 1,000 JSON files, commit, and push to remote Git; insert 1,000 DB rows.
+1. Seed: create N JSON files, commit, and push to remote Git; insert N DB rows.
 2. Read all: fetch from remote Git and read every blob from the commit; DB `SELECT *`.
 3. Read random 100: fetch and read 100 blobs; DB 100 point lookups.
 4. Update all: change URL in all files, commit, push; DB `UPDATE` all rows.
@@ -16,8 +16,9 @@ This guide describes what the benchmark script measures, how each test is execut
 2. Ensure the database in `POSTGRES_DB` exists.
 3. Verify Git remote access (`GIT_REMOTE_URL`).
 4. Ensure the remote repo can accept new branches from the benchmark.
-5. Decide run settings (`--count`, `--runs`, `--sample-size`).
-6. For the parameter sweep, use N = 100, 1000, 15000 with runs = 10, 10, 3.
+5. Decide which remote to target (GitHub vs GitLab) and set `GIT_REMOTE_URL`.
+6. Decide run settings (`--count`, `--runs`, `--sample-size`).
+7. For the parameter sweep, use N = 100, 1000, 15000 with runs = 4, 4, 4.
 
 ## How Each Benchmark Runs
 1. Load `.env` if present and establish a Postgres connection (unless `--skip-db`).
@@ -34,4 +35,4 @@ This guide describes what the benchmark script measures, how each test is execut
 1. Use the Summary table to compare mean timings and speedup ratios.
 2. Use the Git/Postgres tables to see stability (min/max/stdev).
 3. Large variance often indicates caching, compression effects, or network jitter.
-4. Compare `experiments\\results\\n100`, `n1000`, and `n15000` to see scaling trends.
+4. Compare `experiments\\results\\n100_github`, `n100_gitlab`, `n1000_github`, `n1000_gitlab`, `n15000_github`, and `n15000_gitlab` to see scaling trends.
