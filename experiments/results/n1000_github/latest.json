@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "count": 1000,
+    "db_dsn": "postgresql://appuser:****@192.168.0.168:5432/GitvsDb",
+    "git_branch": "main-base-20260223T082535Z",
+    "git_data_dir": "git_data",
+    "git_remote": "https://github.com/Grumlebob/TestRepoDbVsGit.git",
+    "git_run_id": "20260223T082535Z",
+    "run_utc": "2026-02-23T08:26:42.150692+00:00",
+    "runs": 4,
+    "sample_size": 100,
+    "table_name": "DataLocations"
+  },
+  "results": [
+    {
+      "max_ms": 2009.1317999999774,
+      "mean_ms": 1890.7731500000864,
+      "min_ms": 1763.7457000000722,
+      "name": "git_seed",
+      "runs": 4,
+      "stdev_ms": 101.58315806626099
+    },
+    {
+      "max_ms": 628.1138000003921,
+      "mean_ms": 473.9354750001894,
+      "min_ms": 419.30850000017017,
+      "name": "git_read_all",
+      "runs": 4,
+      "stdev_ms": 102.86265350208598
+    },
+    {
+      "max_ms": 509.980099999666,
+      "mean_ms": 452.9742999999371,
+      "min_ms": 411.442800000259,
+      "name": "git_read_random_100",
+      "runs": 4,
+      "stdev_ms": 45.75894447548795
+    },
+    {
+      "max_ms": 6943.994799999928,
+      "mean_ms": 6791.429775000097,
+      "min_ms": 6546.111600000131,
+      "name": "git_update_all",
+      "runs": 4,
+      "stdev_ms": 171.0628341239858
+    },
+    {
+      "max_ms": 2462.6939999998285,
+      "mean_ms": 2150.8419750000485,
+      "min_ms": 1861.945900000137,
+      "name": "git_update_random_100",
+      "runs": 4,
+      "stdev_ms": 315.1394131794108
+    },
+    {
+      "max_ms": 1796.5075000001889,
+      "mean_ms": 1688.4782499998892,
+      "min_ms": 1452.327499999683,
+      "name": "git_delete_all",
+      "runs": 4,
+      "stdev_ms": 162.53953361867886
+    },
+    {
+      "max_ms": 97.07969999999477,
+      "mean_ms": 84.4648249999409,
+      "min_ms": 71.97409999980664,
+      "name": "db_seed",
+      "runs": 4,
+      "stdev_ms": 10.37816689064667
+    },
+    {
+      "max_ms": 14.35059999994337,
+      "mean_ms": 12.900449999960983,
+      "min_ms": 12.209600000005594,
+      "name": "db_read_all",
+      "runs": 4,
+      "stdev_ms": 0.9778672387571561
+    },
+    {
+      "max_ms": 558.2960000001549,
+      "mean_ms": 413.8307000000623,
+      "min_ms": 336.8311999997786,
+      "name": "db_read_random_100",
+      "runs": 4,
+      "stdev_ms": 102.33786461833235
+    },
+    {
+      "max_ms": 30.897600000116654,
+      "mean_ms": 28.574449999950957,
+      "min_ms": 26.738399999885587,
+      "name": "db_update_all",
+      "runs": 4,
+      "stdev_ms": 1.9472179343515392
+    },
+    {
+      "max_ms": 484.64179999973567,
+      "mean_ms": 383.41527499994754,
+      "min_ms": 337.71519999982047,
+      "name": "db_update_random_100",
+      "runs": 4,
+      "stdev_ms": 68.66005248432545
+    },
+    {
+      "max_ms": 43.840499999987514,
+      "mean_ms": 40.670050000130686,
+      "min_ms": 38.809399999991,
+      "name": "db_delete_all",
+      "runs": 4,
+      "stdev_ms": 2.216236170420316
+    }
+  ]
+}
