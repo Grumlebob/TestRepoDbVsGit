@@ -10,4 +10,3 @@ To forskellige ting:
 1. Box har instructions omkring hvad der sker
 1. Github actions tager mappen "RawOutputs" som har nogle tilfældige .gmx eller andet og lægger ind i "HandledOutputs", med ny attribute.
 1. Github ACtions gør det via en Branch der heder DatoOutputResults, og dermed også viser branching functionen, så de kan gøre ting concurrently.
-   test
