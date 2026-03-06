@@ -1,0 +1,6 @@
+outs:
+- md5: e333dd4f73ce6991fe666323633fad24.dir
+  size: 4191213609
+  nfiles: 38
+  hash: md5
+  path: example_inputs
